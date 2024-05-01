@@ -20,13 +20,14 @@
 #
 #images:
 #    - 'gcr.io/$_PROJECT_ID/SERVICENAME:$COMMIT_SHA'
+
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/$SERVICE_NAME:$COMMIT_SHA', '.']
     env:
       - 'PROJECT_ID=$_PROJECT_ID'
-      - 'SERVICE_NAME=$_SERVICE_NAME'
+      - 'SERVICE_NAME=your-service-name'
       - 'COMMIT_SHA=$_COMMIT_SHA'
 
   # Push the container image to Container Registry
@@ -34,7 +35,7 @@ steps:
     args: ['push', 'gcr.io/$PROJECT_ID/$SERVICE_NAME:$COMMIT_SHA']
     env:
       - 'PROJECT_ID=$_PROJECT_ID'
-      - 'SERVICE_NAME=$_SERVICE_NAME'
+      - 'SERVICE_NAME=p906268022628-75hvep@gcp-sa-cloud-sql.iam.gserviceaccount.com'
       - 'COMMIT_SHA=$_COMMIT_SHA'
 
   # Deploy container image to Cloud Run
@@ -51,12 +52,9 @@ steps:
       - '--allow-unauthenticated'
     env:
       - 'PROJECT_ID=$_PROJECT_ID'
-      - 'SERVICE_NAME=$_SERVICE_NAME'
+      - 'SERVICE_NAME=your-service-name'
       - 'COMMIT_SHA=$_COMMIT_SHA'
       - 'REGION=$_REGION'
-
-substitutions:
-  _SERVICE_NAME: "p906268022628-75hvep@gcp-sa-cloud-sql.iam.gserviceaccount.com"
 
 images:
   - 'gcr.io/$_PROJECT_ID/$SERVICE_NAME:$COMMIT_SHA'
