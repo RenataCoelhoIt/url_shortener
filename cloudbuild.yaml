@@ -1,11 +1,36 @@
+#steps:
+## Build the container image
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/$_BINARY_NAME:$COMMIT_SHA', '.']
+#    # Push the container image to Container Registry
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['push', 'gcr.io/$_PROJECT_ID/$_BINARY_NAME:$COMMIT_SHA']
+#    # Deploy container image to Cloud Run
+#  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#    entrypoint: gcloud
+#    args:
+#      - 'run'
+#      - 'deploy'
+#      - 'url'
+#      - '--image'
+#      - 'gcr.io/$_PROJECT_ID/$_BINARY_NAME:$COMMIT_SHA'
+#      - '--region'
+#      - '$_REGION'
+#      - '--allow-unauthenticated'
+#
+#images:
+#    - 'gcr.io/$_PROJECT_ID/SERVICENAME:$COMMIT_SHA'
+
 steps:
-# Build the container image
+  # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/$_BINARY_NAME:$COMMIT_SHA', '.']
-    # Push the container image to Container Registry
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/SERVICENAME:$COMMIT_SHA', '.']
+
+  # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$_PROJECT_ID/$_BINARY_NAME:$COMMIT_SHA']
-    # Deploy container image to Cloud Run
+    args: ['push', 'gcr.io/$PROJECT_ID/SERVICENAME:$COMMIT_SHA']
+
+  # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
@@ -13,10 +38,9 @@ steps:
       - 'deploy'
       - 'url'
       - '--image'
-      - 'gcr.io/$_PROJECT_ID/$_BINARY_NAME:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/SERVICENAME:$COMMIT_SHA'
       - '--region'
       - '$_REGION'
       - '--allow-unauthenticated'
-
 images:
     - 'gcr.io/$_PROJECT_ID/SERVICENAME:$COMMIT_SHA'
