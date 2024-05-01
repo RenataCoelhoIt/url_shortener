@@ -24,11 +24,19 @@
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/SERVICENAME:$COMMIT_SHA', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/$SERVICE_NAME:$COMMIT_SHA', '.']
+    env:
+      - 'PROJECT_ID=$_PROJECT_ID'
+      - 'SERVICE_NAME=$_SERVICE_NAME'
+      - 'COMMIT_SHA=$_COMMIT_SHA'
 
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/SERVICENAME:$COMMIT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/$SERVICE_NAME:$COMMIT_SHA']
+    env:
+      - 'PROJECT_ID=$_PROJECT_ID'
+      - 'SERVICE_NAME=$_SERVICE_NAME'
+      - 'COMMIT_SHA=$_COMMIT_SHA'
 
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -38,9 +46,15 @@ steps:
       - 'deploy'
       - 'url'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/SERVICENAME:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/$SERVICE_NAME:$COMMIT_SHA'
       - '--region'
       - '$_REGION'
       - '--allow-unauthenticated'
+    env:
+      - 'PROJECT_ID=$_PROJECT_ID'
+      - 'SERVICE_NAME=$_SERVICE_NAME'
+      - 'COMMIT_SHA=$_COMMIT_SHA'
+      - 'REGION=$_REGION'
+
 images:
     - 'gcr.io/$_PROJECT_ID/SERVICENAME:$COMMIT_SHA'
