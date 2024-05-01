@@ -52,7 +52,7 @@ steps:
       - '--allow-unauthenticated'
     env:
       - 'PROJECT_ID=$_PROJECT_ID'
-      - 'SERVICE_NAME=your-service-name'
+      - 'SERVICE_NAME=p906268022628-75hvep@gcp-sa-cloud-sql.iam.gserviceaccount.com'
       - 'COMMIT_SHA=$_COMMIT_SHA'
       - 'REGION=$_REGION'
 
