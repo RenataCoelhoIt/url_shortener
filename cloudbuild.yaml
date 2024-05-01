@@ -20,7 +20,6 @@
 #
 #images:
 #    - 'gcr.io/$_PROJECT_ID/SERVICENAME:$COMMIT_SHA'
-
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
@@ -56,5 +55,8 @@ steps:
       - 'COMMIT_SHA=$_COMMIT_SHA'
       - 'REGION=$_REGION'
 
+substitutions:
+  _SERVICE_NAME: "p906268022628-75hvep@gcp-sa-cloud-sql.iam.gserviceaccount.com"
+
 images:
-    - 'gcr.io/$_PROJECT_ID/SERVICENAME:$COMMIT_SHA'
+  - 'gcr.io/$_PROJECT_ID/$SERVICE_NAME:$COMMIT_SHA'
