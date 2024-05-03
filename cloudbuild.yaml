@@ -1,22 +1,62 @@
+#steps:
+## Build the container image
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/url_build:$COMMIT_SHA', '.']
+#    # Push the container image to Container Registry
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['push', 'gcr.io/$_PROJECT_ID/url_build:$COMMIT_SHA']
+#    # Deploy container image to Cloud Run
+#  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#    entrypoint: gcloud
+#    args:
+#      - 'run'
+#      - 'deploy'
+#      - 'url_build'
+#      - '--image'
+#      - 'gcr.io/$_PROJECT_ID/url_build:$COMMIT_SHA'
+#      - '--region'
+#      - '$_REGION'
+#      - '--allow-unauthenticated'
+#
+#images:
+#    - 'gcr.io/$_PROJECT_ID/url_build:$COMMIT_SHA'
+
+
 steps:
-# Build the container image
+  #Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/url_build:$COMMIT_SHA', '.']
-    # Push the container image to Container Registry
+    args:
+      - 'buildx'
+      - 'build'
+      - '--push'
+      - '-t'
+      - 'gcr.io/$_PROJECT_ID/$_BINARY_NAME:$COMMIT_SHA'
+      - '.'
+  #Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$_PROJECT_ID/url_build:$COMMIT_SHA']
-    # Deploy container image to Cloud Run
+    args: ['push', 'gcr.io/$_PROJECT_ID/$_BINARY_NAME:$COMMIT_SHA']
+  #Checking image name
+  - name: 'bash'
+    args: [ 'echo', 'Project ID: $PROJECT_ID' ]
+  - name: 'bash'
+    args: [ 'echo', 'Binary Name: $_BINARY_NAME' ]
+  - name: 'bash'
+    args: [ 'echo', 'Commit SHA: $COMMIT_SHA' ]
+  - name: 'bash'
+    args: [ 'echo', 'Region: $_REGION' ]
+  - name: 'bash'
+    args: [ 'java', '-version' ]
+  # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
       - 'run'
       - 'deploy'
-      - 'url_build'
+      - 'CloudDeploymentService'
       - '--image'
-      - 'gcr.io/$_PROJECT_ID/url_build:$COMMIT_SHA'
+      - 'gcr.io/$_PROJECT_ID/$_BINARY_NAME:$COMMIT_SHA'
       - '--region'
       - '$_REGION'
       - '--allow-unauthenticated'
 
-images:
-    - 'gcr.io/$_PROJECT_ID/url_build:$COMMIT_SHA'
+
