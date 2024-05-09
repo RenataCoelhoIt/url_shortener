@@ -8,7 +8,6 @@
 #
 #ENTRYPOINT ["java","-jar","/app.jar"]
 
-[15:18] Conor Lynam
 FROM maven:3.9.6 as builder
 WORKDIR /app
 COPY pom.xml .
