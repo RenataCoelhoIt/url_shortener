@@ -8,11 +8,11 @@
           driver-class-name: org.postgresql.Driver
           url: jdbc:postgresql:///postgres
           username: postgres
-          password: bounty
+          password: Test123
           hikari:
             data-source-properties:
               socketFactory: com.google.cloud.sql.postgres.SocketFactory
-              cloudSqlInstance: urlshortner-421310:us-central1:bounty2
+              cloudSqlInstance: daring-anagram-419908:us-central1:shortenerurl
 
         jpa:
           hibernate:
